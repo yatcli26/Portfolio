@@ -1,0 +1,361 @@
+html_content = """<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>李逸聰 (Li Yicong) - 個人主頁與數位分身</title>
+    <style>
+        :root {
+            --primary-color: #4a5c50; /* 文雅的深灰綠色 */
+            --bg-color: #f9f8f4; /* 淺米色溫暖背景 */
+            --text-color: #333333;
+            --card-bg: #ffffff;
+            --accent-color: #8c9e90;
+        }
+        body {
+            font-family: 'Noto Serif TC', 'PMingLiU', serif; /* 學術、文雅風格 */
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.7;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 850px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        .avatar {
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid #fff;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            margin-bottom: 20px;
+            background-color: #eaeaea;
+        }
+        h1 {
+            margin: 0 0 10px 0;
+            font-size: 2.6em;
+            color: var(--primary-color);
+            font-weight: 700;
+        }
+        .tagline {
+            font-size: 1.25em;
+            color: #555;
+            font-style: italic;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .section {
+            background: var(--card-bg);
+            padding: 35px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+            margin-bottom: 40px;
+        }
+        h2 {
+            color: var(--primary-color);
+            border-bottom: 2px solid #edf0ee;
+            padding-bottom: 12px;
+            margin-top: 0;
+            font-size: 1.5em;
+        }
+        .info-grid {
+            display: grid;
+            grid-template-columns: 120px 1fr;
+            gap: 15px;
+            font-size: 1.05em;
+        }
+        .info-grid strong {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        @media (max-width: 600px) {
+            .info-grid { grid-template-columns: 1fr; gap: 5px; margin-bottom: 15px; }
+            .info-grid strong { margin-top: 10px; display: inline-block; }
+        }
+        
+        /* 作品集 */
+        .portfolio {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+        .work-card {
+            border: 1px solid #f0f0f0;
+            border-radius: 10px;
+            overflow: hidden;
+            text-decoration: none;
+            color: inherit;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            background: #fff;
+        }
+        .work-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+        .preview-img {
+            height: 160px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 1.1em;
+            font-weight: bold;
+            text-align: center;
+            padding: 20px;
+            letter-spacing: 1px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        .work-info {
+            padding: 20px;
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+        }
+        .work-title {
+            font-weight: 600;
+            font-size: 1.05em;
+            line-height: 1.5;
+            color: #333;
+        }
+
+        /* 聊天區 */
+        .chat-container {
+            border: 1px solid #edf0ee;
+            border-radius: 10px;
+            overflow: hidden;
+            background: #fff;
+            box-shadow: inset 0 2px 10px rgba(0,0,0,0.02);
+        }
+        .chat-box {
+            height: 380px;
+            overflow-y: auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            background: #fafbfc;
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; /* 聊天區使用無襯線字體增添現代感 */
+        }
+        .msg {
+            max-width: 80%;
+            padding: 12px 18px;
+            border-radius: 18px;
+            line-height: 1.6;
+            font-size: 0.95em;
+            word-wrap: break-word;
+        }
+        .msg.bot {
+            background: #eef2ef;
+            color: #2b3a32;
+            align-self: flex-start;
+            border-bottom-left-radius: 4px;
+        }
+        .msg.user {
+            background: var(--primary-color);
+            color: #fff;
+            align-self: flex-end;
+            border-bottom-right-radius: 4px;
+        }
+        .chat-input-area {
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            border-top: 1px solid #edf0ee;
+            background: #fff;
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        }
+        .quick-replies {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
+        .quick-btn {
+            background: #fff;
+            border: 1px solid var(--accent-color);
+            color: var(--primary-color);
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: all 0.2s;
+        }
+        .quick-btn:hover {
+            background: var(--accent-color);
+            color: #fff;
+        }
+        .input-row {
+            display: flex;
+            gap: 10px;
+        }
+        input[type="text"] {
+            flex-grow: 1;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 0.95em;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        input[type="text"]:focus {
+            border-color: var(--primary-color);
+        }
+        button.send-btn {
+            background: var(--primary-color);
+            color: #fff;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.95em;
+            font-weight: bold;
+            transition: background 0.2s;
+        }
+        button.send-btn:hover {
+            background: #3a4a3f;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <img src="頭像.jpeg" alt="李逸聰" class="avatar" onerror="this.src='https://via.placeholder.com/160/cccccc/666666?text=Avatar'">
+            <h1>李逸聰</h1>
+            <div class="tagline">「一個致力於推動資訊普及，消弭數位落差的實幹者。」</div>
+        </header>
+
+        <div class="section">
+            <h2>關於我</h2>
+            <div class="info-grid">
+                <strong>身分學歷</strong>
+                <span>HKU 圖書館及資訊管理學碩士生、HKBU 歷史系甲級榮譽畢業、Librarian</span>
+                
+                <strong>近期關注事項</strong>
+                <span>將數位人文及 Vibe Coding 工具與資訊管理專業結合，實踐數位工具於教學及資訊普及的應用。</span>
+                
+                <strong>興趣領域</strong>
+                <span>文史哲、跑步、閱讀、遊戲、數位人文及AI應用、持續學習</span>
+                
+                <strong>個人特質</strong>
+                <span>充滿活力、正面、務實</span>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>作品集預覽</h2>
+            <div class="portfolio">
+                <a href="https://drive.google.com/file/d/10AktHCIlEK3A_wL8oHk2UCS5g5JJV0VO/view?usp=sharing" target="_blank" class="work-card">
+                    <div class="preview-img" style="background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%);">
+                        歷史研究與性別解讀
+                    </div>
+                    <div class="work-info">
+                        <div class="work-title">從「永徽之治」到「禍貽邦家」：唐高宗歷史形象演變之性別解讀</div>
+                    </div>
+                </a>
+                
+                <a href="https://peterlibrary.com/about-me/" target="_blank" class="work-card">
+                    <div class="preview-img" style="background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%);">
+                        數位知識庫
+                    </div>
+                    <div class="work-info">
+                        <div class="work-title">伯多祿圖書館</div>
+                    </div>
+                </a>
+
+                <a href="https://s63775724.wixsite.com/ibnbatutajourney" target="_blank" class="work-card">
+                    <div class="preview-img" style="background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);">
+                        數位人文地圖
+                    </div>
+                    <div class="work-info">
+                        <div class="work-title">Ibn Batuta's Travel to China</div>
+                    </div>
+                </a>
+
+                <a href="https://s63775724.wixsite.com/xu-xiake" target="_blank" class="work-card">
+                    <div class="preview-img" style="background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);">
+                        遊記數位化
+                    </div>
+                    <div class="work-info">
+                        <div class="work-title">Discoveries of Xu Xiake's Journey in Ming Dynasty</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>數位分身聊天區</h2>
+            <p style="color: #666; font-size: 0.95em; margin-top: -10px; margin-bottom: 20px;">
+                歡迎！我是李逸聰的 AI 數位分身。您可以點擊下方預設問題，或直接打字與我互動，進一步了解我的理念與背景。
+            </p>
+            <div class="chat-container">
+                <div class="chat-box" id="chatBox">
+                    <div class="msg bot">您好！我是李逸聰的數位分身。身為一名 Librarian，我近期專注於學習 Vibe Coding 與探索數位應用的可能性。對我的經歷或理念有好奇的地方嗎？歡迎提問！</div>
+                </div>
+                <div class="chat-input-area">
+                    <div class="quick-replies">
+                        <button class="quick-btn" onclick="sendMsg('爲什麽想推動資訊普及？')">爲什麽想推動資訊普及？</button>
+                        <button class="quick-btn" onclick="sendMsg('爲什麽想做老師？')">爲什麽想做老師？</button>
+                        <button class="quick-btn" onclick="sendMsg('教學理念是什麽？')">教學理念是什麽？</button>
+                    </div>
+                    <div class="input-row">
+                        <input type="text" id="userInput" placeholder="輸入您的問題..." onkeypress="if(event.key === 'Enter') handleInput()">
+                        <button class="send-btn" onclick="handleInput()">發送</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const qaDatabase = {
+            '爲什麽想推動資訊普及？': '在這個資訊大爆炸的時代，我觀察到社會地位的差異往往會造成極大的數位落差，進而加劇社會不公。過去我接觸過許多相關研究，因此希望能運用資訊管理的專業，致力推動資訊普及，讓更多值得被看見的知識與資源，能夠真正走入大眾的生活中。',
+            '爲什麽想做老師？': '過去的我，曾經是個在全級倒數打滾的頑劣學生。但我非常幸運地遇見了幾位極具耐心的恩師，他們「不放棄任何一位學生」的教學理念深深觸動了我，也成就了今天的我。我渴望承繼這份精神，透過教育以生命影響生命，帶給更多學生希望與引導。',
+            '教學理念是什麽？': '我的教育理念在於「以人為本」。除了耐心教授課本的知識外，我更重視透過細心的觀察，去協助每一個學生找到自己的特長。我相信，無論是善於學習還是不善於學習的學生，都能在適當的引導下找到屬於自己的道路與閃光點。'
+        };
+
+        function appendMsg(text, sender) {
+            const chatBox = document.getElementById('chatBox');
+            const msgDiv = document.createElement('div');
+            msgDiv.className = `msg ${sender}`;
+            msgDiv.innerText = text;
+            chatBox.appendChild(msgDiv);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        function sendMsg(text) {
+            appendMsg(text, 'user');
+            
+            // 模擬 AI 思考延遲
+            setTimeout(() => {
+                const answer = qaDatabase[text] || '這是一個很棒的問題！目前我的數位分身主要學習了關於資訊普及、教學理念與個人背景的內容。若想深入探討其他話題，非常歡迎您直接聯絡李逸聰本人交流！';
+                appendMsg(answer, 'bot');
+            }, 600);
+        }
+
+        function handleInput() {
+            const inputField = document.getElementById('userInput');
+            const text = inputField.value.trim();
+            if (text) {
+                sendMsg(text);
+                inputField.value = '';
+            }
+        }
+    </script>
+</body>
+</html>
+"""
+
+with open('LiYicong_Portfolio_Prototype.html', 'w', encoding='utf-8') as f:
+    f.write(html_content)
+
+print("HTML prototype generated.")
