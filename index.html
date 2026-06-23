@@ -504,22 +504,54 @@
             chatBox.scrollTop = chatBox.scrollHeight;
         }
 
-        function sendMsg(text) {
+// 這是連線到你未來後端 API 的功能
+        async function sendMsg(text) {
             appendMsg(text, 'user');
             
-            // 模擬 AI 思考延遲
-            setTimeout(() => {
-                const answer = qaDatabase[text] || '這是一個很棒的問題！目前我的數位分身主要學習了關於資訊普及、教學理念與個人背景的內容。若想深入探討其他話題，非常歡迎您直接聯絡李逸聰本人交流！';
-                appendMsg(answer, 'bot');
-            }, 600);
-        }
-
-        function handleInput() {
             const inputField = document.getElementById('userInput');
-            const text = inputField.value.trim();
-            if (text) {
-                sendMsg(text);
-                inputField.value = '';
+            const sendBtn = document.querySelector('.send-btn');
+            
+            // 暫時鎖定輸入框，避免重複發送
+            inputField.disabled = true;
+            sendBtn.disabled = true;
+
+            // 顯示 AI 思考中的提示
+            const chatBox = document.getElementById('chatBox');
+            const typingId = 'typing-' + Date.now();
+            const msgDiv = document.createElement('div');
+            msgDiv.className = `msg bot`;
+            msgDiv.id = typingId;
+            msgDiv.innerText = '思考中...';
+            chatBox.appendChild(msgDiv);
+            chatBox.scrollTop = chatBox.scrollHeight;
+
+            try {
+                // ⚠️ 這裡的網址之後要換成你自己的後端 API 網址
+                const apiUrl = 'https://你的後端伺服器網址.com/api/chat'; 
+                
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message: text })
+                });
+
+                if (!response.ok) throw new Error('Network response was not ok');
+                
+                const data = await response.json();
+                
+                // 移除思考中提示，換成真實回答
+                document.getElementById(typingId).remove();
+                appendMsg(data.reply, 'bot');
+
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById(typingId).remove();
+                appendMsg('哎呀，我的大腦連線似乎有點狀況，請稍後再試或直接聯絡李逸聰本人！', 'bot');
+            } finally {
+                // 恢復輸入框
+                inputField.disabled = false;
+                sendBtn.disabled = false;
+                inputField.focus();
             }
         }
 
