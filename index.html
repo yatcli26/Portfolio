@@ -105,6 +105,71 @@
             color: var(--primary-color);
             font-weight: 600;
         }
+        /* 證書展示區 (橫向滑動) */
+        .cert-container {
+            display: flex;
+            overflow-x: auto;
+            gap: 20px;
+            padding-bottom: 15px; /* 留空間給捲軸 */
+            scroll-snap-type: x mandatory; /* 讓滑動時卡片會自動對齊 */
+            -webkit-overflow-scrolling: touch; /* 提升手機版滑動順暢度 */
+        }
+        /* 美化捲軸 */
+        .cert-container::-webkit-scrollbar {
+            height: 6px;
+        }
+        .cert-container::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+        .cert-container::-webkit-scrollbar-thumb {
+            background: var(--accent-color);
+            border-radius: 4px;
+        }
+        .cert-card {
+            flex: 0 0 auto; /* 避免卡片被擠壓變形 */
+            width: 260px; /* 卡片寬度 */
+            scroll-snap-align: start;
+            border: 1px solid #edf0ee;
+            border-radius: 10px;
+            overflow: hidden;
+            background: #fff;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+            transition: transform 0.3s ease;
+        }
+        .cert-card:hover {
+            transform: translateY(-5px);
+        }
+        .cert-img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            object-position: top; /* 聚焦在證書上半部的 Logo 和標題 */
+            border-bottom: 1px solid #edf0ee;
+            background-color: #fcfcfc;
+        }
+        .cert-info {
+            padding: 15px;
+        }
+        .cert-title {
+            font-weight: 600;
+            color: var(--primary-color);
+            font-size: 1em;
+            line-height: 1.3;
+            margin-bottom: 5px;
+        }
+        .cert-issuer {
+            font-size: 0.85em;
+            color: #777;
+        }
+        .scroll-hint {
+            font-size: 0.85em;
+            color: #888;
+            text-align: right;
+            margin-top: 5px;
+            margin-bottom: 0;
+            font-style: italic;
+        }
         /* 作品集 */
         .portfolio {
             display: grid;
@@ -281,6 +346,35 @@
                 <li>短時間內幫助 SEN 學生 <span class="highlight-text">年級總排名提升近 20 名</span>，中國歷史進步 44 分，世界歷史進步 32 分。</li>
                 <li>於「伯多祿圖書館」整合學習資源，<span class="highlight-text">三個月內超過 40,000 瀏覽量</span>，以實際行動為學生帶來重要的學習支援。</li>
             </ul>
+        </div>
+        <div class="section">
+            <h2>專業認證</h2>
+            <div class="cert-container">
+                <div class="cert-card">
+                    <img src="cert_google_ai.jpg" alt="Google AI Professional Certificate" class="cert-img" onerror="this.src='https://via.placeholder.com/260x180/edf0ee/666666?text=Google+AI+Cert'">
+                    <div class="cert-info">
+                        <div class="cert-title">Google AI Professional Certificate</div>
+                        <div class="cert-issuer">Google / Coursera</div>
+                    </div>
+                </div>
+
+                <div class="cert-card">
+                    <img src="cert_m365_ess.jpg" alt="Microsoft 365 Essentials" class="cert-img" onerror="this.src='https://via.placeholder.com/260x180/edf0ee/666666?text=M365+Essentials'">
+                    <div class="cert-info">
+                        <div class="cert-title">Microsoft 365 Essentials</div>
+                        <div class="cert-issuer">Microsoft / Coursera</div>
+                    </div>
+                </div>
+
+                <div class="cert-card">
+                    <img src="cert_m365_fund.jpg" alt="Microsoft 365 Fundamentals" class="cert-img" onerror="this.src='https://via.placeholder.com/260x180/edf0ee/666666?text=M365+Fundamentals'">
+                    <div class="cert-info">
+                        <div class="cert-title">Microsoft 365 Fundamentals</div>
+                        <div class="cert-issuer">Microsoft / Coursera</div>
+                    </div>
+                </div>
+            </div>
+            <p class="scroll-hint">👉 向右滑動查看更多</p>
         </div>
         <div class="section">
             <h2>作品集</h2>
