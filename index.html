@@ -520,5 +520,18 @@
             }
         }
     </script>
+    // 開啟證書燈箱
+        function openCertModal(imgSrc) {
+            const modal = document.getElementById('certModal');
+            const modalImg = document.getElementById('certModalImg');
+            modalImg.src = imgSrc; // 將點擊的圖片網址帶入燈箱
+            modal.classList.add('show'); // 顯示燈箱
+        }
+
+        // 關閉證書燈箱
+        function closeCertModal() {
+            const modal = document.getElementById('certModal');
+            modal.classList.remove('show'); // 隱藏燈箱
+        }
 </body>
 </html>
